@@ -1,4 +1,4 @@
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaSearch } from 'react-icons/fa';
 
 const ProductList = ({ products, onDelete }) => {
   const handleDelete = (id, name) => {
@@ -9,9 +9,13 @@ const ProductList = ({ products, onDelete }) => {
 
   return (
     <div className="product-list">
-      <h2>Danh sách sản phẩm</h2>
+      <h2>Danh sách sản phẩm ({products.length})</h2>
+
       {products.length === 0 ? (
-        <p className="no-products">Không có sản phẩm nào</p>
+        <div className="no-products">
+          <FaSearch size={48} color="#6c757d" />
+          <p>Không tìm thấy sản phẩm phù hợp</p>
+        </div>
       ) : (
         <table className="product-table">
           <thead>
@@ -35,7 +39,8 @@ const ProductList = ({ products, onDelete }) => {
                     onClick={() => handleDelete(product.id, product.name)}
                     className="delete-btn"
                   >
-                    <FaTrash /> Xoá
+                    <FaTrash style={{ marginRight: '5px' }} />
+                    Xoá
                   </button>
                 </td>
               </tr>

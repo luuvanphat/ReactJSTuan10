@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { sampleProducts } from './data/sampleProducts';
 import ProductList from './components/ProductList';
 import ProductForm from './components/ProductForm';
+import SearchBar from './components/SearchBar';
 import './App.css';
 
 function App() {
   const [products, setProducts] = useState(sampleProducts);
   const [notification, setNotification] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const showNotification = (message) => {
     setNotification(message);
@@ -24,6 +26,11 @@ function App() {
     showNotification(`Đã thêm sản phẩm "${newProduct.name}"`);
   };
 
+  // Lọc sản phẩm theo tên (không phân biệt hoa thường)
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="app">
       <h1>Quản lý sản phẩm</h1>
@@ -32,8 +39,13 @@ function App() {
           {notification}
         </div>
       )}
-      <ProductForm onAddProduct={addProduct} />
-      <ProductList products={products} onDelete={deleteProduct} />
+      
+      <div className="controls">
+        <ProductForm onAddProduct={addProduct} />
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      </div>
+      
+      <ProductList products={filteredProducts} onDelete={deleteProduct} />
     </div>
   );
 }
