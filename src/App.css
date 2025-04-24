@@ -172,3 +172,32 @@
   margin-top: 15px;
   font-size: 18px;
 }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.category-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.category-filter label {
+  font-weight: bold;
+}
+
+.category-select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.category-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}

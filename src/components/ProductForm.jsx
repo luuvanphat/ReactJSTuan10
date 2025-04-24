@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-const ProductForm = ({ onAddProduct }) => {
+const ProductForm = ({ onAddProduct, categories }) => {
+  const defaultCategory = categories[0] || 'Thời trang';
+
   const [formData, setFormData] = useState({
     name: '',
     price: '',
-    category: 'Thời trang',
+    category: defaultCategory,
     stock: ''
   });
-
-  const categories = ['Thời trang', 'Công nghệ', 'Gia dụng', 'Đồ ăn', 'Sách'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +31,7 @@ const ProductForm = ({ onAddProduct }) => {
     setFormData({
       name: '',
       price: '',
-      category: 'Thời trang',
+      category: defaultCategory,
       stock: ''
     });
   };
@@ -39,6 +39,7 @@ const ProductForm = ({ onAddProduct }) => {
   return (
     <form onSubmit={handleSubmit} className="product-form">
       <h2>Thêm sản phẩm mới</h2>
+
       <div className="form-group">
         <label>Tên sản phẩm:</label>
         <input
@@ -49,7 +50,7 @@ const ProductForm = ({ onAddProduct }) => {
           required
         />
       </div>
-      
+
       <div className="form-group">
         <label>Giá (VNĐ):</label>
         <input
@@ -61,7 +62,7 @@ const ProductForm = ({ onAddProduct }) => {
           required
         />
       </div>
-      
+
       <div className="form-group">
         <label>Danh mục:</label>
         <select
@@ -74,7 +75,7 @@ const ProductForm = ({ onAddProduct }) => {
           ))}
         </select>
       </div>
-      
+
       <div className="form-group">
         <label>Tồn kho:</label>
         <input
@@ -86,7 +87,7 @@ const ProductForm = ({ onAddProduct }) => {
           required
         />
       </div>
-      
+
       <button type="submit" className="add-btn">
         Thêm sản phẩm
       </button>

@@ -3,12 +3,17 @@ import { sampleProducts } from './data/sampleProducts';
 import ProductList from './components/ProductList';
 import ProductForm from './components/ProductForm';
 import SearchBar from './components/SearchBar';
+import CategoryFilter from './components/CategoryFilter';
 import './App.css';
 
 function App() {
   const [products, setProducts] = useState(sampleProducts);
   const [notification, setNotification] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Lấy danh sách các danh mục duy nhất từ sản phẩm
+  const categories = [...new Set(products.map(product => product.category))];
 
   const showNotification = (message) => {
     setNotification(message);
@@ -26,10 +31,12 @@ function App() {
     showNotification(`Đã thêm sản phẩm "${newProduct.name}"`);
   };
 
-  // Lọc sản phẩm theo tên (không phân biệt hoa thường)
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Lọc sản phẩm theo tên và danh mục
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="app">
@@ -41,8 +48,13 @@ function App() {
       )}
       
       <div className="controls">
-        <ProductForm onAddProduct={addProduct} />
+        <ProductForm onAddProduct={addProduct} categories={categories} />
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        <CategoryFilter 
+          categories={categories} 
+          selectedCategory={selectedCategory} 
+          onCategoryChange={setSelectedCategory} 
+        />
       </div>
       
       <ProductList products={filteredProducts} onDelete={deleteProduct} />
