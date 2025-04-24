@@ -228,3 +228,18 @@
   color: #4CAF50;
   font-size: 1.1em;
 }
+
+.reset-btn {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.reset-btn:hover {
+  background-color: #e68a00;
+}

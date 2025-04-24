@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useLocalStorage from './hooks/useLocalStorage';
 import { sampleProducts } from './data/sampleProducts';
 import ProductList from './components/ProductList';
 import ProductForm from './components/ProductForm';
@@ -8,12 +9,11 @@ import ProductStats from './components/ProductStats';
 import './App.css';
 
 function App() {
-  const [products, setProducts] = useState(sampleProducts);
+  const [products, setProducts] = useLocalStorage('products', sampleProducts);
   const [notification, setNotification] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Lấy danh sách danh mục duy nhất
   const categories = [...new Set(products.map(product => product.category))];
 
   const showNotification = (message) => {
@@ -32,14 +32,19 @@ function App() {
     if (deleted) showNotification(`Đã xoá sản phẩm "${deleted.name}"`);
   };
 
-  // Lọc sản phẩm theo tên và danh mục
+  const resetData = () => {
+    if (window.confirm('Bạn có chắc muốn reset dữ liệu về mẫu?')) {
+      setProducts(sampleProducts);
+      showNotification('Đã reset dữ liệu về mẫu ban đầu');
+    }
+  };
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  // Tính toán thống kê
   const totalProducts = products.length;
   const totalStock = products.reduce((sum, product) => sum + product.stock, 0);
 
@@ -57,10 +62,12 @@ function App() {
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
         />
+        <button onClick={resetData} className="reset-btn">
+          Reset dữ liệu
+        </button>
       </div>
 
       <ProductStats totalProducts={totalProducts} totalStock={totalStock} />
-
       <ProductList products={filteredProducts} onDelete={deleteProduct} />
     </div>
   );
